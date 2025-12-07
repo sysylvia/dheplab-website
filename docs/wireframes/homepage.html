@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHEPLab — Digital Health Economics & Policy</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       DHEPLab Design System — Homepage Wireframe
+       Aesthetic: "Editorial Science"
+       ============================================ */
+
+    :root {
+      /* Colors */
+      --color-carolina: #4B9CD3;
+      --color-carolina-dark: #3A7CA5;
+      --color-carolina-light: #7BB8E0;
+      --color-carolina-pale: #E8F4FC;
+      --color-navy: #13294B;
+      --color-navy-light: #1E3A5F;
+      --color-paper: #FAFAF8;
+      --color-cream: #F5F4F0;
+      --color-stone: #E8E6E1;
+      --color-slate: #64748B;
+      --color-charcoal: #334155;
+      --color-ink: #1E293B;
+
+      /* Typography */
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Spacing */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-charcoal);
+      background: var(--color-paper);
+      line-height: 1.6;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(250, 250, 248, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-stone);
+      z-index: 100;
+      padding: var(--space-4) 0;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--color-navy);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span {
+      color: var(--color-carolina);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      padding: var(--space-2) 0;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--color-carolina);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-carolina);
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: var(--color-carolina);
+      color: white;
+      padding: var(--space-2) var(--space-4);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--color-carolina-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ---- Hero Section ---- */
+    .hero {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-24);
+      max-width: 1280px;
+      margin: 0 auto;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-carolina);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-4);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 400;
+      color: var(--color-navy);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      margin-bottom: var(--space-6);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--color-carolina);
+    }
+
+    .hero-description {
+      font-size: 1.25rem;
+      color: var(--color-slate);
+      max-width: 600px;
+      margin-bottom: var(--space-8);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-4);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.3s forwards;
+    }
+
+    .btn-primary {
+      background: var(--color-carolina);
+      color: white;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: var(--space-3) var(--space-6);
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-carolina-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(75, 156, 211, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-carolina);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: var(--space-3) var(--space-6);
+      border-radius: 6px;
+      border: 1.5px solid var(--color-carolina);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-carolina-pale);
+    }
+
+    /* ---- Stats Bar ---- */
+    .stats-bar {
+      background: var(--color-navy);
+      padding: var(--space-10) var(--space-6);
+    }
+
+    .stats-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--color-carolina-light);
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- Section Styles ---- */
+    .section {
+      padding: var(--space-24) var(--space-6);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: var(--space-12);
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-carolina);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-3);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 400;
+      color: var(--color-navy);
+      letter-spacing: -0.01em;
+    }
+
+    .accent-line {
+      width: 48px;
+      height: 3px;
+      background: var(--color-carolina);
+      margin-top: var(--space-4);
+    }
+
+    /* ---- Research Areas ---- */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .research-card {
+      background: white;
+      border-radius: 8px;
+      padding: var(--space-8);
+      border: 1px solid var(--color-stone);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .research-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--color-carolina);
+      transition: height 0.3s ease;
+    }
+
+    .research-card:hover {
+      border-color: var(--color-carolina-light);
+      box-shadow: 0 8px 24px rgba(19, 41, 75, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .research-card:hover::before {
+      height: 100%;
+    }
+
+    .research-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-carolina-pale);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+      color: var(--color-carolina);
+    }
+
+    .research-title {
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      margin-bottom: var(--space-3);
+    }
+
+    .research-description {
+      font-size: 0.9rem;
+      color: var(--color-slate);
+      line-height: 1.6;
+    }
+
+    /* ---- News Section ---- */
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .news-featured {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--color-stone);
+      transition: all 0.3s ease;
+    }
+
+    .news-featured:hover {
+      box-shadow: 0 12px 32px rgba(19, 41, 75, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .news-featured-image {
+      height: 280px;
+      background: linear-gradient(135deg, var(--color-carolina-pale), var(--color-cream));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-slate);
+      font-size: 0.875rem;
+    }
+
+    .news-featured-content {
+      padding: var(--space-6);
+    }
+
+    .news-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-carolina);
+      margin-bottom: var(--space-2);
+    }
+
+    .news-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--color-navy);
+      margin-bottom: var(--space-3);
+      line-height: 1.3;
+    }
+
+    .news-excerpt {
+      font-size: 0.9rem;
+      color: var(--color-slate);
+      line-height: 1.6;
+    }
+
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .news-item {
+      background: white;
+      border-radius: 8px;
+      padding: var(--space-4);
+      border: 1px solid var(--color-stone);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .news-item:hover {
+      border-color: var(--color-carolina-light);
+      transform: translateX(4px);
+    }
+
+    .news-item-title {
+      font-weight: 600;
+      color: var(--color-charcoal);
+      font-size: 0.9rem;
+      margin-bottom: var(--space-1);
+    }
+
+    .news-item-date {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-slate);
+    }
+
+    /* ---- Team Preview ---- */
+    .team-section {
+      background: var(--color-cream);
+    }
+
+    .team-section .section {
+      max-width: 1280px;
+    }
+
+    .team-grid {
+      display: flex;
+      gap: var(--space-8);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .team-member {
+      text-align: center;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-4px);
+    }
+
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-carolina-light), var(--color-carolina));
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      border: 3px solid white;
+      box-shadow: 0 4px 12px rgba(19, 41, 75, 0.1);
+    }
+
+    .team-name {
+      font-weight: 600;
+      color: var(--color-navy);
+      font-size: 1rem;
+      margin-bottom: var(--space-1);
+    }
+
+    .team-role {
+      font-size: 0.8rem;
+      color: var(--color-slate);
+    }
+
+    /* ---- Newsletter CTA ---- */
+    .newsletter-section {
+      background: var(--color-navy);
+      padding: var(--space-20) var(--space-6);
+    }
+
+    .newsletter-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .newsletter-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: white;
+      margin-bottom: var(--space-4);
+    }
+
+    .newsletter-description {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: var(--space-8);
+      font-size: 1.1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: var(--space-3);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: var(--space-3) var(--space-4);
+      border-radius: 6px;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 1rem;
+    }
+
+    .newsletter-input:focus {
+      outline: 2px solid var(--color-carolina);
+      outline-offset: 2px;
+    }
+
+    .newsletter-btn {
+      background: var(--color-carolina);
+      color: white;
+      padding: var(--space-3) var(--space-6);
+      border-radius: 6px;
+      border: none;
+      font-family: var(--font-body);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .newsletter-btn:hover {
+      background: var(--color-carolina-light);
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      background: var(--color-ink);
+      padding: var(--space-16) var(--space-6);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-12);
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-brand span {
+      color: var(--color-carolina);
+    }
+
+    .footer-description {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-affiliation {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .footer-column h4 {
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: var(--space-2);
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-carolina-light);
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: var(--space-12) auto 0;
+      padding-top: var(--space-8);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    /* ---- Animations ---- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1024px) {
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .research-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-6);
+      }
+
+      .research-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .team-grid {
+        gap: var(--space-6);
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">DHEP<span>Lab</span></a>
+      <ul class="nav-links">
+        <li><a href="/research" class="nav-link">Research</a></li>
+        <li><a href="/team" class="nav-link">Team</a></li>
+        <li><a href="/publications" class="nav-link">Publications</a></li>
+        <li><a href="/blog" class="nav-link">Insights</a></li>
+        <li><a href="/contact" class="nav-link">Contact</a></li>
+      </ul>
+      <a href="/newsletter" class="nav-cta">Subscribe</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="hero-eyebrow">UNC Gillings School of Global Public Health</span>
+    <h1 class="hero-title">
+      Advancing health through <em>economics</em>, <em>policy</em>, and <em>digital innovation</em>
+    </h1>
+    <p class="hero-description">
+      We study how digital health technologies, economic incentives, and policy design
+      can improve healthcare delivery and population health outcomes.
+    </p>
+    <div class="hero-actions">
+      <a href="/research" class="btn-primary">
+        Explore Our Research
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <a href="/newsletter" class="btn-secondary">Subscribe to Newsletter</a>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-number">$4.2M</div>
+        <div class="stat-label">Active Grants</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">47</div>
+        <div class="stat-label">Publications</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Team Members</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Partner Organizations</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Areas -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">What We Study</span>
+      <h2 class="section-title">Research Areas</h2>
+      <div class="accent-line"></div>
+    </div>
+
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3 class="research-title">Clinical AI Evaluation</h3>
+        <p class="research-description">
+          Rigorous assessment of AI-assisted clinical decision support systems,
+          studying human-AI collaboration and appropriate reliance in healthcare settings.
+        </p>
+      </div>
+
+      <div class="research-card">
+        <div class="research-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <h3 class="research-title">Value-Based Care</h3>
+        <p class="research-description">
+          Economic analysis of alternative payment models and their impact on
+          healthcare quality, cost, and provider behavior in value-based arrangements.
+        </p>
+      </div>
+
+      <div class="research-card">
+        <div class="research-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <h3 class="research-title">Digital Health Policy</h3>
+        <p class="research-description">
+          Examining regulatory frameworks, implementation strategies, and policy
+          levers that shape the adoption and effectiveness of digital health technologies.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest News -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-eyebrow">Lab Updates</span>
+      <h2 class="section-title">Latest News</h2>
+      <div class="accent-line"></div>
+    </div>
+
+    <div class="news-grid">
+      <div class="news-featured">
+        <div class="news-featured-image">[Featured Image]</div>
+        <div class="news-featured-content">
+          <span class="news-date">Dec 6, 2024</span>
+          <h3 class="news-title">New NIH R01 Grant Awarded for Clinical AI Research</h3>
+          <p class="news-excerpt">
+            DHEPLab has been awarded a $2.1M grant from the National Institutes of Health
+            to study human-AI collaboration in clinical decision-making...
+          </p>
+        </div>
+      </div>
+
+      <div class="news-list">
+        <a href="#" class="news-item">
+          <div class="news-item-title">PhD Student Sarah Chen Wins Best Paper Award</div>
+          <span class="news-item-date">Nov 28, 2024</span>
+        </a>
+        <a href="#" class="news-item">
+          <div class="news-item-title">Lab Presents at AMIA Annual Symposium</div>
+          <span class="news-item-date">Nov 15, 2024</span>
+        </a>
+        <a href="#" class="news-item">
+          <div class="news-item-title">Collaboration with Duke Health Announced</div>
+          <span class="news-item-date">Oct 30, 2024</span>
+        </a>
+        <a href="#" class="news-item">
+          <div class="news-item-title">New Working Paper on AI Reliance Published</div>
+          <span class="news-item-date">Oct 18, 2024</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Preview -->
+  <section class="team-section">
+    <div class="section">
+      <div class="section-header" style="text-align: center;">
+        <span class="section-eyebrow">Our People</span>
+        <h2 class="section-title">Meet the Team</h2>
+        <div class="accent-line" style="margin: var(--space-4) auto 0;"></div>
+      </div>
+
+      <div class="team-grid">
+        <a href="#" class="team-member">
+          <div class="team-avatar">SS</div>
+          <div class="team-name">Sean Sylvia</div>
+          <div class="team-role">Principal Investigator</div>
+        </a>
+        <a href="#" class="team-member">
+          <div class="team-avatar">SC</div>
+          <div class="team-name">Sarah Chen</div>
+          <div class="team-role">PhD Candidate</div>
+        </a>
+        <a href="#" class="team-member">
+          <div class="team-avatar">MJ</div>
+          <div class="team-name">Mike Johnson</div>
+          <div class="team-role">Postdoctoral Fellow</div>
+        </a>
+        <a href="#" class="team-member">
+          <div class="team-avatar">AP</div>
+          <div class="team-name">Amy Park</div>
+          <div class="team-role">Research Assistant</div>
+        </a>
+        <a href="#" class="team-member">
+          <div class="team-avatar">+4</div>
+          <div class="team-name">View All</div>
+          <div class="team-role">Team Members</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter-section">
+    <div class="newsletter-content">
+      <h2 class="newsletter-title">Stay Updated with DHEPLab Insights</h2>
+      <p class="newsletter-description">
+        Weekly perspectives on digital health, clinical AI, and health economics research.
+        Join researchers and practitioners shaping the future of healthcare.
+      </p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter your email" class="newsletter-input">
+        <button type="submit" class="newsletter-btn">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <div class="footer-brand">DHEP<span>Lab</span></div>
+        <p class="footer-description">
+          Digital Health Economics & Policy Lab at UNC Gillings School of Global Public Health.
+          Advancing health through rigorous research at the intersection of economics,
+          policy, and digital innovation.
+        </p>
+        <p class="footer-affiliation">
+          Part of the Department of Health Policy and Management
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Research</h4>
+        <ul class="footer-links">
+          <li><a href="#">Clinical AI</a></li>
+          <li><a href="#">Value-Based Care</a></li>
+          <li><a href="#">Digital Health Policy</a></li>
+          <li><a href="#">Publications</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Lab</h4>
+        <ul class="footer-links">
+          <li><a href="#">Team</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Insights Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Connect</h4>
+        <ul class="footer-links">
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter/X</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2024 DHEPLab. All rights reserved.</span>
+      <span>UNC Gillings School of Global Public Health</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,141 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Digital Health Economics & Policy Lab at UNC Gillings School of Global Public Health"
+} = Astro.props;
+
+const siteTitle = title === "DHEPLab" ? title : `${title} | DHEPLab`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={siteTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DHEPLab" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={siteTitle} />
+  <meta name="twitter:description" content={description} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{siteTitle}</title>
+</head>
+<body class="min-h-screen flex flex-col">
+  <header>
+    <slot name="header">
+      <nav class="fixed top-0 left-0 right-0 bg-paper/95 backdrop-blur-sm border-b border-stone z-50">
+        <div class="container flex items-center justify-between py-4">
+          <a href="/" class="font-display text-2xl text-navy tracking-tight">
+            DHEP<span class="text-carolina">Lab</span>
+          </a>
+
+          <ul class="hidden md:flex items-center gap-8">
+            <li>
+              <a href="/research" class="text-base font-medium text-charcoal hover:text-carolina transition-colors">
+                Research
+              </a>
+            </li>
+            <li>
+              <a href="/team" class="text-base font-medium text-charcoal hover:text-carolina transition-colors">
+                Team
+              </a>
+            </li>
+            <li>
+              <a href="/publications" class="text-base font-medium text-charcoal hover:text-carolina transition-colors">
+                Publications
+              </a>
+            </li>
+            <li>
+              <a href="/blog" class="text-base font-medium text-charcoal hover:text-carolina transition-colors">
+                Insights
+              </a>
+            </li>
+            <li>
+              <a href="/contact" class="text-base font-medium text-charcoal hover:text-carolina transition-colors">
+                Contact
+              </a>
+            </li>
+          </ul>
+
+          <a href="/newsletter" class="btn-primary">
+            Subscribe
+          </a>
+        </div>
+      </nav>
+    </slot>
+  </header>
+
+  <main class="flex-1 pt-[72px]">
+    <slot />
+  </main>
+
+  <footer class="bg-ink text-white/70 py-16">
+    <div class="container">
+      <div class="grid md:grid-cols-4 gap-12">
+        <div>
+          <div class="font-display text-2xl text-white mb-4">
+            DHEP<span class="text-carolina">Lab</span>
+          </div>
+          <p class="text-sm leading-relaxed mb-4">
+            Digital Health Economics & Policy Lab at UNC Gillings School of Global Public Health.
+            Advancing health through rigorous research at the intersection of economics, policy, and digital innovation.
+          </p>
+          <p class="text-xs text-white/50">
+            Part of the Department of Health Policy and Management
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-white text-sm font-semibold uppercase tracking-wide mb-4">Research</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/research/clinical-ai" class="hover:text-carolina-light transition-colors">Clinical AI</a></li>
+            <li><a href="/research/value-based-care" class="hover:text-carolina-light transition-colors">Value-Based Care</a></li>
+            <li><a href="/research/digital-health-policy" class="hover:text-carolina-light transition-colors">Digital Health Policy</a></li>
+            <li><a href="/publications" class="hover:text-carolina-light transition-colors">Publications</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white text-sm font-semibold uppercase tracking-wide mb-4">Lab</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/team" class="hover:text-carolina-light transition-colors">Team</a></li>
+            <li><a href="/news" class="hover:text-carolina-light transition-colors">News</a></li>
+            <li><a href="/blog" class="hover:text-carolina-light transition-colors">Insights Blog</a></li>
+            <li><a href="/contact" class="hover:text-carolina-light transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white text-sm font-semibold uppercase tracking-wide mb-4">Connect</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/newsletter" class="hover:text-carolina-light transition-colors">Newsletter</a></li>
+            <li><a href="https://linkedin.com" class="hover:text-carolina-light transition-colors">LinkedIn</a></li>
+            <li><a href="https://twitter.com" class="hover:text-carolina-light transition-colors">Twitter/X</a></li>
+            <li><a href="https://github.com" class="hover:text-carolina-light transition-colors">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between text-xs">
+        <span>&copy; {new Date().getFullYear()} DHEPLab. All rights reserved.</span>
+        <span class="mt-2 md:mt-0">UNC Gillings School of Global Public Health</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

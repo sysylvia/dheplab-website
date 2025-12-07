@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Try to get publications if the collection exists
+let publications: any[] = [];
+try {
+  publications = await getCollection('publications');
+} catch (e) {
+  // Collection may not exist or be empty
+}
+
+// Sort by year, then alphabetically
+const sortedPublications = publications.sort((a, b) => {
+  if (b.data.year !== a.data.year) return b.data.year - a.data.year;
+  return a.data.title.localeCompare(b.data.title);
+});
+
+// Group by year
+const publicationsByYear = sortedPublications.reduce((acc, pub) => {
+  const year = pub.data.year;
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(pub);
+  return acc;
+}, {} as Record<number, typeof publications>);
+
+const years = Object.keys(publicationsByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="Publications" description="Academic publications from DHEPLab research on clinical AI, value-based care, and digital health policy.">
+
+  <!-- Hero -->
+  <section class="bg-navy text-white py-20">
+    <div class="container">
+      <p class="eyebrow text-carolina-light mb-4">Our Research</p>
+      <h1 class="text-4xl md:text-5xl font-display text-white mb-6">Publications</h1>
+      <p class="text-xl text-white/80 max-w-2xl">
+        Peer-reviewed articles, working papers, and policy briefs from DHEPLab.
+      </p>
+    </div>
+  </section>
+
+  <!-- Publications List -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+
+      {publications.length > 0 ? (
+        <div class="space-y-12">
+          {years.map((year) => (
+            <div>
+              <h2 class="text-2xl font-display text-navy mb-6 flex items-center gap-3">
+                <span class="font-mono text-carolina">{year}</span>
+                <span class="flex-1 h-px bg-stone"></span>
+              </h2>
+              <div class="space-y-4">
+                {publicationsByYear[Number(year)].map((pub: any) => (
+                  <article class="card">
+                    <h3 class="font-semibold text-navy mb-2">
+                      {pub.data.url ? (
+                        <a href={pub.data.url} target="_blank" rel="noopener" class="hover:text-carolina transition-colors">
+                          {pub.data.title}
+                        </a>
+                      ) : (
+                        pub.data.title
+                      )}
+                    </h3>
+                    <p class="text-sm text-slate mb-2">
+                      {pub.data.authors.join(', ')}
+                    </p>
+                    <p class="text-sm text-carolina">
+                      {pub.data.journal}
+                      {pub.data.doi && (
+                        <a href={`https://doi.org/${pub.data.doi}`} target="_blank" rel="noopener" class="ml-2 text-slate hover:text-carolina">
+                          [{pub.data.doi}]
+                        </a>
+                      )}
+                    </p>
+                    {pub.data.abstract && (
+                      <details class="mt-3">
+                        <summary class="text-sm text-carolina cursor-pointer hover:text-carolina-dark">
+                          View Abstract
+                        </summary>
+                        <p class="text-sm text-slate mt-2 leading-relaxed">
+                          {pub.data.abstract}
+                        </p>
+                      </details>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="max-w-2xl mx-auto">
+          <div class="card text-center py-12">
+            <div class="text-4xl mb-4">📚</div>
+            <h2 class="text-xl font-display text-navy mb-3">Publications Coming Soon</h2>
+            <p class="text-slate mb-6">
+              Our publication list is being migrated. In the meantime, view our work on Google Scholar.
+            </p>
+            <a
+              href="https://scholar.google.com/citations?user=PLACEHOLDER"
+              target="_blank"
+              rel="noopener"
+              class="btn-secondary"
+            >
+              View on Google Scholar
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Sample publications for preview -->
+          <div class="mt-12">
+            <h2 class="text-xl font-display text-navy mb-6">Selected Works</h2>
+            <div class="space-y-4">
+              <article class="card">
+                <h3 class="font-semibold text-navy mb-2">
+                  Evaluating AI-Assisted Clinical Decision Support: A Framework for Real-World Assessment
+                </h3>
+                <p class="text-sm text-slate mb-2">
+                  Sylvia S, et al.
+                </p>
+                <p class="text-sm text-carolina">
+                  Health Affairs (forthcoming)
+                </p>
+              </article>
+
+              <article class="card">
+                <h3 class="font-semibold text-navy mb-2">
+                  The Impact of Value-Based Payment on Primary Care Quality: Evidence from Medicare ACOs
+                </h3>
+                <p class="text-sm text-slate mb-2">
+                  Sylvia S, et al.
+                </p>
+                <p class="text-sm text-carolina">
+                  Journal of Health Economics, 2024
+                </p>
+              </article>
+
+              <article class="card">
+                <h3 class="font-semibold text-navy mb-2">
+                  Digital Health Policy in the Post-Pandemic Era: Challenges and Opportunities
+                </h3>
+                <p class="text-sm text-slate mb-2">
+                  Sylvia S, et al.
+                </p>
+                <p class="text-sm text-carolina">
+                  NEJM Catalyst, 2023
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-12 bg-carolina-pale">
+    <div class="container text-center">
+      <p class="text-charcoal mb-4">
+        Looking for a specific paper or want to collaborate on research?
+      </p>
+      <a href="/contact" class="btn-primary">Contact Us</a>
+    </div>
+  </section>
+
+</BaseLayout>

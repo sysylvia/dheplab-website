@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const research = await getCollection('research');
+const featuredResearch = research.filter(r => r.data.featured);
+const otherResearch = research.filter(r => !r.data.featured);
+
+const categories = {
+  'clinical-ai': { name: 'Clinical AI', icon: '🔬' },
+  'value-based-care': { name: 'Value-Based Care', icon: '📊' },
+  'digital-health-policy': { name: 'Digital Health Policy', icon: '📋' }
+};
+---
+
+<BaseLayout title="Research" description="Explore DHEPLab's research in clinical AI evaluation, value-based care, and digital health policy.">
+
+  <!-- Hero -->
+  <section class="bg-navy text-white py-20">
+    <div class="container">
+      <p class="eyebrow text-carolina-light mb-4">Our Work</p>
+      <h1 class="text-4xl md:text-5xl font-display text-white mb-6">Research</h1>
+      <p class="text-xl text-white/80 max-w-2xl">
+        We study how digital technologies, payment systems, and policy innovations
+        can improve health outcomes and reduce costs across diverse populations.
+      </p>
+    </div>
+  </section>
+
+  <!-- Research Areas Overview -->
+  <section class="py-16 bg-cream">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Focus Areas</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {Object.entries(categories).map(([key, cat]) => (
+          <a href={`/research/${key}`} class="card group">
+            <div class="text-3xl mb-3">{cat.icon}</div>
+            <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors">
+              {cat.name}
+            </h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  {featuredResearch.length > 0 && (
+    <section class="py-16 bg-paper">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Featured Projects</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {featuredResearch.map((project) => (
+            <a href={`/research/${project.id}`} class="card card-featured group">
+              <span class="eyebrow text-carolina mb-2 block">
+                {categories[project.data.category]?.name}
+              </span>
+              <h3 class="text-xl font-display text-navy mb-3 group-hover:text-carolina transition-colors">
+                {project.data.title}
+              </h3>
+              <p class="text-slate leading-relaxed">
+                {project.data.description}
+              </p>
+              <div class="mt-4 flex items-center gap-2 text-carolina text-sm font-medium">
+                Learn more
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- All Projects -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">All Projects</h2>
+      {research.length > 0 ? (
+        <div class="grid gap-6">
+          {research.map((project) => (
+            <a href={`/research/${project.id}`} class="card group flex flex-col md:flex-row md:items-center gap-4">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="eyebrow text-carolina">
+                    {categories[project.data.category]?.name}
+                  </span>
+                  <span class={`text-xs px-2 py-0.5 rounded ${
+                    project.data.status === 'active' ? 'bg-green-100 text-green-700' :
+                    project.data.status === 'completed' ? 'bg-slate/10 text-slate' :
+                    'bg-carolina-pale text-carolina-dark'
+                  }`}>
+                    {project.data.status}
+                  </span>
+                </div>
+                <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors">
+                  {project.data.title}
+                </h3>
+                <p class="text-sm text-slate mt-1">
+                  {project.data.description}
+                </p>
+              </div>
+              <div class="text-carolina">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-slate">Research projects coming soon.</p>
+      )}
+    </div>
+  </section>
+
+  <!-- Collaborate CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Interested in Collaborating?</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        We're always looking for research partners, health system collaborators,
+        and funding opportunities to advance our work.
+      </p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+</BaseLayout>

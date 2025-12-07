@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredPost = sortedPosts[0];
+const otherPosts = sortedPosts.slice(1);
+
+// Get all unique tags
+const allTags = [...new Set(posts.flatMap(post => post.data.tags))];
+---
+
+<BaseLayout title="Insights" description="Research updates, policy analysis, and perspectives from DHEPLab.">
+
+  <!-- Hero -->
+  <section class="bg-navy text-white py-20">
+    <div class="container">
+      <p class="eyebrow text-carolina-light mb-4">DHEPLab Insights</p>
+      <h1 class="text-4xl md:text-5xl font-display text-white mb-6">Blog</h1>
+      <p class="text-xl text-white/80 max-w-2xl">
+        Research updates, policy analysis, and perspectives on digital health innovation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Featured Post -->
+  {featuredPost && (
+    <section class="py-16 bg-cream">
+      <div class="container">
+        <a href={`/blog/${featuredPost.id}`} class="card card-featured block group">
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2">
+              <span class="eyebrow text-carolina mb-3 block">Featured</span>
+              <h2 class="text-2xl md:text-3xl font-display text-navy mb-4 group-hover:text-carolina transition-colors">
+                {featuredPost.data.title}
+              </h2>
+              <p class="text-slate leading-relaxed mb-4">
+                {featuredPost.data.description}
+              </p>
+              <div class="flex items-center gap-4 text-sm text-slate">
+                <span>{featuredPost.data.author}</span>
+                <span>•</span>
+                <time datetime={featuredPost.data.pubDate.toISOString()}>
+                  {featuredPost.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center">
+              <div class="w-full h-48 bg-stone rounded-lg flex items-center justify-center text-4xl">
+                📝
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- All Posts -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <div class="grid md:grid-cols-4 gap-12">
+
+        <!-- Posts Grid -->
+        <div class="md:col-span-3">
+          <h2 class="text-2xl font-display text-navy mb-8">All Posts</h2>
+
+          {sortedPosts.length > 0 ? (
+            <div class="grid gap-6">
+              {sortedPosts.map((post) => (
+                <a href={`/blog/${post.id}`} class="card group">
+                  <div class="flex items-start gap-4">
+                    <div class="flex-1">
+                      <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+                        {post.data.title}
+                      </h3>
+                      <p class="text-sm text-slate line-clamp-2 mb-3">
+                        {post.data.description}
+                      </p>
+                      <div class="flex items-center gap-4 text-xs text-slate">
+                        <span>{post.data.author}</span>
+                        <span>•</span>
+                        <time datetime={post.data.pubDate.toISOString()}>
+                          {post.data.pubDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </time>
+                      </div>
+                    </div>
+                    <div class="text-carolina shrink-0">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div class="text-center py-12">
+              <p class="text-slate">No posts yet. Check back soon!</p>
+            </div>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+          <div class="sticky top-24">
+
+            <!-- Tags -->
+            {allTags.length > 0 && (
+              <div class="mb-8">
+                <h3 class="text-sm font-semibold text-navy uppercase tracking-wide mb-4">Topics</h3>
+                <div class="flex flex-wrap gap-2">
+                  {allTags.map((tag) => (
+                    <a
+                      href={`/blog/tag/${tag}`}
+                      class="text-xs px-3 py-1 rounded-full bg-carolina-pale text-carolina-dark hover:bg-carolina hover:text-white transition-colors"
+                    >
+                      {tag}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- Newsletter -->
+            <div class="card bg-navy text-white">
+              <h3 class="text-lg font-semibold text-white mb-2">Stay Updated</h3>
+              <p class="text-sm text-white/70 mb-4">
+                Get new posts delivered to your inbox.
+              </p>
+              <a href="/newsletter" class="btn-primary bg-carolina text-sm w-full justify-center">
+                Subscribe
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
