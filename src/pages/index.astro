@@ -6,19 +6,19 @@ const researchAreas = [
   {
     title: "Clinical AI Evaluation",
     description: "Developing rigorous methodologies to assess AI-assisted clinical decision support systems, from algorithm performance to real-world clinical impact.",
-    icon: "🔬",
+    icon: "/images/research/clinical-ai-icon.jpg",
     link: "/research/clinical-ai"
   },
   {
     title: "Value-Based Care",
     description: "Analyzing payment models that reward quality over quantity, with focus on ACO performance, risk adjustment, and care delivery transformation.",
-    icon: "📊",
+    icon: "/images/research/value-based-care-icon.jpg",
     link: "/research/value-based-care"
   },
   {
     title: "Digital Health Policy",
     description: "Examining regulatory frameworks, reimbursement policies, and implementation science for digital health technologies at scale.",
-    icon: "📋",
+    icon: "/images/research/digital-health-policy-icon.jpg",
     link: "/research/digital-health-policy"
   }
 ];
@@ -114,7 +114,7 @@ const team = [
       <div class="grid md:grid-cols-3 gap-6">
         {researchAreas.map((area) => (
           <a href={area.link} class="card group">
-            <div class="text-3xl mb-4">{area.icon}</div>
+            <img src={area.icon} alt={area.title} class="w-16 h-16 rounded-lg object-cover mb-4" />
             <h3 class="text-lg font-semibold text-navy mb-3 group-hover:text-carolina transition-colors">
               {area.title}
             </h3>
