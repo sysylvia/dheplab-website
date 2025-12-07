@@ -42,15 +42,15 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Leadership</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {leadership.map((member) => (
-              <div class="card text-center">
+              <a href={`/team/${member.id}`} class="card text-center group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-32 h-32 mx-auto rounded-full object-cover mb-4" />
+                  <img src={member.data.image} alt={member.data.name} class="w-32 h-32 mx-auto rounded-full object-cover mb-4 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-32 h-32 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-3xl font-semibold mb-4">
+                  <div class="w-32 h-32 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-3xl font-semibold mb-4 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="text-xl font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="text-xl font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 <p class="text-carolina font-medium">{member.data.role}</p>
                 {member.data.title && (
                   <p class="text-sm text-slate mt-1">{member.data.title}</p>
@@ -58,26 +58,10 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
                 <p class="text-sm text-slate mt-4 leading-relaxed">
                   {member.data.bio.slice(0, 200)}...
                 </p>
-                {member.data.links && (
-                  <div class="flex justify-center gap-4 mt-4">
-                    {member.data.links.twitter && (
-                      <a href={member.data.links.twitter} class="text-slate hover:text-carolina transition-colors" aria-label="Twitter">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                      </a>
-                    )}
-                    {member.data.links.linkedin && (
-                      <a href={member.data.links.linkedin} class="text-slate hover:text-carolina transition-colors" aria-label="LinkedIn">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                      </a>
-                    )}
-                    {member.data.links.scholar && (
-                      <a href={member.data.links.scholar} class="text-slate hover:text-carolina transition-colors" aria-label="Google Scholar">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
+                <div class="mt-4 text-carolina text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  View Profile →
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -89,17 +73,17 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Research Team</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {researchers.map((member) => (
-              <div class="card text-center">
+              <a href={`/team/${member.id}`} class="card text-center group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -111,17 +95,17 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Students</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {students.map((member) => (
-              <div class="card text-center">
+              <a href={`/team/${member.id}`} class="card text-center group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -133,17 +117,17 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Staff</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {staff.map((member) => (
-              <div class="card text-center">
+              <a href={`/team/${member.id}`} class="card text-center group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -155,20 +139,20 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Collaborators</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {collaborators.map((member) => (
-              <div class="card text-center">
+              <a href={`/team/${member.id}`} class="card text-center group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
                 {member.data.title && (
                   <p class="text-xs text-slate mt-1">{member.data.title}</p>
                 )}
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -180,33 +164,19 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <h2 class="text-2xl font-display text-navy mb-8">Alumni</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sortedAlumni.map((member) => (
-              <div class="card text-center bg-stone/30">
+              <a href={`/team/${member.id}`} class="card text-center bg-stone/30 group cursor-pointer">
                 {member.data.image ? (
-                  <img src={member.data.image} alt={member.data.name} class="w-16 h-16 mx-auto rounded-full object-cover mb-3 opacity-80" />
+                  <img src={member.data.image} alt={member.data.name} class="w-16 h-16 mx-auto rounded-full object-cover mb-3 opacity-80 group-hover:opacity-100 group-hover:ring-4 group-hover:ring-carolina/30 transition-all" />
                 ) : (
-                  <div class="w-16 h-16 mx-auto rounded-full bg-stone flex items-center justify-center text-slate text-lg font-semibold mb-3">
+                  <div class="w-16 h-16 mx-auto rounded-full bg-stone flex items-center justify-center text-slate text-lg font-semibold mb-3 group-hover:ring-4 group-hover:ring-carolina/30 transition-all">
                     {member.data.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h3 class="font-semibold text-navy">{member.data.name}</h3>
+                <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors">{member.data.name}</h3>
                 {member.data.title && (
                   <p class="text-xs text-slate mt-1">{member.data.title}</p>
                 )}
-                {member.data.links && (
-                  <div class="flex justify-center gap-3 mt-2">
-                    {member.data.links.scholar && (
-                      <a href={member.data.links.scholar} class="text-slate hover:text-carolina transition-colors" aria-label="Google Scholar">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
-                      </a>
-                    )}
-                    {member.data.links.website && (
-                      <a href={member.data.links.website} class="text-slate hover:text-carolina transition-colors" aria-label="Website">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
+              </a>
             ))}
           </div>
         </div>
