@@ -14,7 +14,7 @@ const allTags = [...new Set(posts.flatMap(post => post.data.tags))];
 <BaseLayout title="Insights" description="Research updates, policy analysis, and perspectives from DHEPLab.">
 
   <!-- Hero -->
-  <section class="bg-navy text-white py-20">
+  <section class="relative text-white py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(19, 41, 75, 0.9) 0%, rgba(19, 41, 75, 0.75) 100%), url('/images/heroes/blog-hero.jpg');">
     <div class="container">
       <p class="eyebrow text-carolina-light mb-4">DHEPLab Insights</p>
       <h1 class="text-4xl md:text-5xl font-display text-white mb-6">Blog</h1>
