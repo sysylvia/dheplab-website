@@ -43,9 +43,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {leadership.map((member) => (
               <div class="card text-center">
-                <div class="w-32 h-32 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-3xl font-semibold mb-4">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-32 h-32 mx-auto rounded-full object-cover mb-4" />
+                ) : (
+                  <div class="w-32 h-32 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-3xl font-semibold mb-4">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="text-xl font-semibold text-navy">{member.data.name}</h3>
                 <p class="text-carolina font-medium">{member.data.role}</p>
                 {member.data.title && (
@@ -86,9 +90,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {researchers.map((member) => (
               <div class="card text-center">
-                <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                ) : (
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="font-semibold text-navy">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
               </div>
@@ -104,9 +112,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {students.map((member) => (
               <div class="card text-center">
-                <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                ) : (
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="font-semibold text-navy">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
               </div>
@@ -122,9 +134,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {staff.map((member) => (
               <div class="card text-center">
-                <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                ) : (
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="font-semibold text-navy">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
               </div>
@@ -140,9 +156,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {collaborators.map((member) => (
               <div class="card text-center">
-                <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-20 h-20 mx-auto rounded-full object-cover mb-3" />
+                ) : (
+                  <div class="w-20 h-20 mx-auto rounded-full bg-stone flex items-center justify-center text-navy text-xl font-semibold mb-3">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="font-semibold text-navy">{member.data.name}</h3>
                 <p class="text-sm text-carolina">{member.data.role}</p>
                 {member.data.title && (
@@ -161,9 +181,13 @@ const collaborators = sortedTeam.filter(m => ['Collaborator'].includes(m.data.ro
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sortedAlumni.map((member) => (
               <div class="card text-center bg-stone/30">
-                <div class="w-16 h-16 mx-auto rounded-full bg-stone flex items-center justify-center text-slate text-lg font-semibold mb-3">
-                  {member.data.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                {member.data.image ? (
+                  <img src={member.data.image} alt={member.data.name} class="w-16 h-16 mx-auto rounded-full object-cover mb-3 opacity-80" />
+                ) : (
+                  <div class="w-16 h-16 mx-auto rounded-full bg-stone flex items-center justify-center text-slate text-lg font-semibold mb-3">
+                    {member.data.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                )}
                 <h3 class="font-semibold text-navy">{member.data.name}</h3>
                 {member.data.title && (
                   <p class="text-xs text-slate mt-1">{member.data.title}</p>

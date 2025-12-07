@@ -3,6 +3,7 @@ name: Sean Y. Sylvia
 role: Director
 title: Associate Professor, Health Policy and Management
 email: sean_sylvia@unc.edu
+image: /images/profile_pics/sean-sylvia.png
 bio: Health and development economist using experimental and quasi-experimental methods to study innovative approaches to improve the delivery of health services in underserved communities globally. Leads the Digital Health Economics & Policy Lab (DHEPLab).
 order: 1
 links:

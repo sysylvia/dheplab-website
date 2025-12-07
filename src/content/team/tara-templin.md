@@ -3,6 +3,7 @@ name: Tara Templin
 role: Co-Director
 title: Assistant Professor, Health Policy and Management
 email: ttemplin@unc.edu
+image: /images/profile_pics/tara-templin.avif
 bio: Health economist studying population-level socioeconomic causes and consequences of noncommunicable diseases, and cost-effective public health policies for their prevention and treatment in resource-constrained settings.
 order: 2
 links:
