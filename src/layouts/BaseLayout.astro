@@ -32,7 +32,11 @@ const siteTitle = title === "DHEPLab" ? title : `${title} | DHEPLab`;
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={description} />
 
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <title>{siteTitle}</title>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -40,8 +44,11 @@ const siteTitle = title === "DHEPLab" ? title : `${title} | DHEPLab`;
     <slot name="header">
       <nav class="fixed top-0 left-0 right-0 bg-paper/95 backdrop-blur-sm border-b border-stone z-50">
         <div class="container flex items-center justify-between py-4">
-          <a href="/" class="font-display text-2xl text-navy tracking-tight">
-            DHEP<span class="text-carolina">Lab</span>
+          <a href="/" class="flex items-center gap-3">
+            <img src="/dhep-logo.png" alt="DHEPLab" class="h-10 w-auto" />
+            <span class="font-display text-2xl text-navy tracking-tight">
+              DHEP<span class="text-carolina">Lab</span>
+            </span>
           </a>
 
           <ul class="hidden md:flex items-center gap-8">
