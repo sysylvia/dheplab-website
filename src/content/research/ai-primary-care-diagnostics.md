@@ -1,7 +1,7 @@
 ---
 title: AI for Primary Care Diagnostics
 description: Developing and evaluating generative AI systems to improve diagnostic accuracy in resource-limited primary care settings, using reinforcement learning with expert feedback.
-category: clinical-ai
+category: clinical-decision-support
 status: active
 featured: true
 fundingSources:

@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const research = await getCollection('research');
+  return research.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const categories = {
+  'clinical-decision-support': { name: 'Clinical Decision Support', url: '/research/clinical-decision-support' },
+  'patient-demand-alignment': { name: 'Patient Demand & Alignment', url: '/research/patient-demand-alignment' },
+  'digital-health-transformation': { name: 'Digital Health Transformation', url: '/research/digital-health-transformation' }
+};
+
+const category = categories[project.data.category];
+
+// Get related publications if specified in frontmatter
+const allPublications = await getCollection('publications');
+const relatedPubs = project.data.publications
+  ? allPublications.filter(pub => project.data.publications.includes(pub.id))
+  : [];
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style={`background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 244, 240, 0.88) 100%), url('${project.data.image || '/images/heroes/research-hero.jpg'}');`}>
+    <div class="container">
+      <div class="flex items-center gap-2 mb-6">
+        <a href="/research" class="text-carolina hover:text-carolina-dark transition-colors text-sm font-medium">
+          Research
+        </a>
+        <span class="text-slate">/</span>
+        {category && (
+          <>
+            <a href={category.url} class="text-carolina hover:text-carolina-dark transition-colors text-sm font-medium">
+              {category.name}
+            </a>
+            <span class="text-slate">/</span>
+          </>
+        )}
+        <span class="text-slate text-sm">Project</span>
+      </div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <span class={`text-xs px-3 py-1 rounded-full font-medium ${
+          project.data.status === 'active' ? 'bg-green-100 text-green-700' :
+          project.data.status === 'completed' ? 'bg-slate/10 text-slate' :
+          'bg-carolina-pale text-carolina-dark'
+        }`}>
+          {project.data.status.charAt(0).toUpperCase() + project.data.status.slice(1)}
+        </span>
+        {project.data.featured && (
+          <span class="text-xs px-3 py-1 rounded-full bg-carolina-pale text-carolina-dark font-medium">
+            Featured
+          </span>
+        )}
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">{project.data.title}</h1>
+      <p class="text-xl text-charcoal max-w-3xl">
+        {project.data.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Project Info Bar -->
+  <section class="py-6 bg-cream border-b border-stone">
+    <div class="container">
+      <div class="flex flex-wrap gap-8">
+        {project.data.fundingSources && project.data.fundingSources.length > 0 && (
+          <div>
+            <span class="text-xs uppercase tracking-wide text-slate font-medium block mb-1">Funding</span>
+            <span class="text-navy font-medium">{project.data.fundingSources.join(', ')}</span>
+          </div>
+        )}
+        {project.data.collaborators && project.data.collaborators.length > 0 && (
+          <div>
+            <span class="text-xs uppercase tracking-wide text-slate font-medium block mb-1">Partners</span>
+            <span class="text-navy font-medium">{project.data.collaborators.join(', ')}</span>
+          </div>
+        )}
+        {project.data.startDate && (
+          <div>
+            <span class="text-xs uppercase tracking-wide text-slate font-medium block mb-1">Period</span>
+            <span class="text-navy font-medium">
+              {new Date(project.data.startDate).getFullYear()}
+              {project.data.endDate ? ` - ${new Date(project.data.endDate).getFullYear()}` : ' - Present'}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Content -->
+        <div class="lg:col-span-2">
+          <article class="prose prose-slate prose-lg max-w-none prose-headings:font-display prose-headings:text-navy prose-a:text-carolina hover:prose-a:text-carolina-dark">
+            <Content />
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-8">
+          <!-- Quick Links -->
+          <div class="card">
+            <h3 class="font-semibold text-navy mb-4">Quick Links</h3>
+            <ul class="space-y-2 text-sm">
+              {category && (
+                <li>
+                  <a href={category.url} class="text-carolina hover:text-carolina-dark transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    More {category.name} Projects
+                  </a>
+                </li>
+              )}
+              <li>
+                <a href="/publications" class="text-carolina hover:text-carolina-dark transition-colors flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                  View Publications
+                </a>
+              </li>
+              <li>
+                <a href="/team" class="text-carolina hover:text-carolina-dark transition-colors flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                  Meet the Team
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div class="card bg-carolina-pale">
+            <h3 class="font-semibold text-navy mb-2">Interested in this research?</h3>
+            <p class="text-sm text-slate mb-4">
+              Contact us to learn more about this project or explore collaboration opportunities.
+            </p>
+            <a href="/contact" class="btn-primary w-full text-center">
+              Get in Touch
+            </a>
+          </div>
+
+          <!-- Related Publications -->
+          {relatedPubs.length > 0 && (
+            <div class="card">
+              <h3 class="font-semibold text-navy mb-4">Related Publications</h3>
+              <ul class="space-y-4">
+                {relatedPubs.map((pub) => (
+                  <li>
+                    <a href={pub.data.url || (pub.data.doi ? `https://doi.org/${pub.data.doi}` : '#')}
+                       target="_blank" rel="noopener noreferrer"
+                       class="text-sm text-navy hover:text-carolina transition-colors block">
+                      {pub.data.title}
+                    </a>
+                    <span class="text-xs text-slate">{pub.data.journal} ({pub.data.year})</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Projects -->
+  <section class="py-16 bg-cream">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Explore More Research</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {Object.entries(categories).map(([key, cat]) => (
+          <a href={cat.url} class="card group">
+            <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+              {cat.name}
+            </h3>
+            <p class="text-sm text-slate">
+              View all projects in this research area
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

@@ -48,7 +48,7 @@ const research = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    category: z.enum(['clinical-ai', 'value-based-care', 'digital-health-policy']),
+    category: z.enum(['clinical-decision-support', 'patient-demand-alignment', 'digital-health-transformation']),
     status: z.enum(['active', 'completed', 'planned']).default('active'),
     featured: z.boolean().default(false),
     image: z.string().optional(),

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const affiliations = [
+  {
+    name: "UNC Gillings School of Global Public Health",
+    description: "The #1 ranked public school of public health in the United States",
+    type: "Primary Home"
+  },
+  {
+    name: "Department of Health Policy and Management",
+    description: "Interdisciplinary research on health systems, policy, and management",
+    type: "Department"
+  },
+  {
+    name: "Center for AI in Public Health",
+    description: "Advancing AI applications for population health improvement",
+    type: "Center"
+  },
+  {
+    name: "Cecil G. Sheps Center for Health Services Research",
+    description: "One of the nation's leading health services research centers",
+    type: "Research Center"
+  },
+  {
+    name: "Carolina Population Center",
+    description: "Interdisciplinary population research and training",
+    type: "Research Center"
+  }
+];
+---
+
+<BaseLayout title="About" description="Learn about DHEPLab, our mission, and our affiliations at UNC Chapel Hill.">
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 244, 240, 0.85) 100%), url('/images/heroes/homepage-hero.jpg');">
+    <div class="container">
+      <p class="eyebrow text-carolina mb-4">About Us</p>
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">DHEPLab</h1>
+      <p class="text-xl text-charcoal max-w-2xl">
+        The Digital Health Economics & Policy Lab at UNC Gillings School of Global Public Health
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="py-16 bg-paper">
+    <div class="container max-w-4xl">
+      <h2 class="text-2xl font-display text-navy mb-6">Our Mission</h2>
+      <p class="text-lg text-charcoal leading-relaxed mb-6">
+        We integrate behavioral and computational science for health policy research in the digital age.
+        Our multidisciplinary team brings together expertise from economics, public health, biostatistics,
+        and computer science to address critical questions at the intersection of digital technology and healthcare.
+      </p>
+      <p class="text-lg text-charcoal leading-relaxed">
+        Through rigorous research, we seek to understand how digital health technologies, economic incentives,
+        and policy design can improve healthcare delivery and population health outcomes—particularly for
+        underserved communities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Research Focus -->
+  <section class="py-16 bg-cream">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Research Focus</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-3">Clinical Decision Support</h3>
+          <p class="text-slate text-sm leading-relaxed">
+            Developing and evaluating AI-assisted tools that complement human expertise in clinical settings.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-3">Patient Demand & Alignment</h3>
+          <p class="text-slate text-sm leading-relaxed">
+            Understanding patient behavior, preferences, and economic factors that drive healthcare decisions.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-3">Digital Health Transformation</h3>
+          <p class="text-slate text-sm leading-relaxed">
+            Examining telemedicine, health information systems, and the digitization of healthcare delivery.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Affiliations -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Affiliations</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {affiliations.map((affiliation) => (
+          <div class="card">
+            <span class="eyebrow text-carolina mb-2 block">{affiliation.type}</span>
+            <h3 class="text-lg font-semibold text-navy mb-2">{affiliation.name}</h3>
+            <p class="text-slate text-sm leading-relaxed">{affiliation.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Get in Touch</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        Interested in collaborating or learning more about our work?
+      </p>
+      <div class="flex justify-center gap-4">
+        <a href="/contact" class="btn-primary">Contact Us</a>
+        <a href="/team" class="btn-secondary">Meet the Team</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

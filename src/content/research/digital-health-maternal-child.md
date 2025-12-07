@@ -1,7 +1,7 @@
 ---
 title: Digital Health for Maternal and Child Care
 description: Mobile health platforms and evidence-based curricula to improve maternal and child health outcomes through community health worker interventions in developing countries.
-category: digital-health-policy
+category: digital-health-transformation
 status: active
 featured: true
 fundingSources:

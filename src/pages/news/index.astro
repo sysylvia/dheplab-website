@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const featuredNews = sortedNews.filter(n => n.data.featured);
+const otherNews = sortedNews.filter(n => !n.data.featured);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+};
+
+const categoryColors = {
+  award: 'bg-amber-100 text-amber-700',
+  publication: 'bg-blue-100 text-blue-700',
+  event: 'bg-purple-100 text-purple-700',
+  media: 'bg-green-100 text-green-700',
+  announcement: 'bg-carolina-pale text-carolina-dark',
+};
+---
+
+<BaseLayout title="News" description="Latest news, publications, and announcements from DHEPLab.">
+
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 244, 240, 0.85) 100%), url('/images/heroes/research-hero.jpg');">
+    <div class="container">
+      <p class="eyebrow text-carolina mb-4">Lab Updates</p>
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">News</h1>
+      <p class="text-xl text-charcoal max-w-2xl">
+        Stay up to date with our latest research, publications, awards, and announcements.
+      </p>
+    </div>
+  </section>
+
+  <!-- Featured News -->
+  {featuredNews.length > 0 && (
+    <section class="py-16 bg-cream">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Featured</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {featuredNews.map((item) => (
+            <a href={`/news/${item.id}`} class="card card-featured group">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-xs text-slate">{formatDate(item.data.date)}</span>
+                {item.data.category && (
+                  <span class={`text-xs px-2 py-0.5 rounded ${categoryColors[item.data.category] || 'bg-slate/10 text-slate'}`}>
+                    {item.data.category}
+                  </span>
+                )}
+              </div>
+              <h3 class="text-xl font-display text-navy mb-3 group-hover:text-carolina transition-colors">
+                {item.data.title}
+              </h3>
+              <p class="text-slate leading-relaxed">
+                {item.data.excerpt}
+              </p>
+              <div class="mt-4 text-carolina text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                Read more
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- All News -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">All News</h2>
+      {sortedNews.length > 0 ? (
+        <div class="space-y-6">
+          {sortedNews.map((item) => (
+            <a href={`/news/${item.id}`} class="card group flex flex-col md:flex-row md:items-center gap-4">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="text-xs text-slate">{formatDate(item.data.date)}</span>
+                  {item.data.category && (
+                    <span class={`text-xs px-2 py-0.5 rounded ${categoryColors[item.data.category] || 'bg-slate/10 text-slate'}`}>
+                      {item.data.category}
+                    </span>
+                  )}
+                  {item.data.featured && (
+                    <span class="text-xs px-2 py-0.5 rounded bg-carolina-pale text-carolina-dark">Featured</span>
+                  )}
+                </div>
+                <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors">
+                  {item.data.title}
+                </h3>
+                <p class="text-sm text-slate mt-1 line-clamp-2">
+                  {item.data.excerpt}
+                </p>
+              </div>
+              <div class="text-carolina">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-slate">News coming soon.</p>
+      )}
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Stay Connected</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        Subscribe to our newsletter for weekly insights on digital health, clinical AI, and health economics research.
+      </p>
+      <a href="/newsletter" class="btn-primary">Subscribe to Newsletter</a>
+    </div>
+  </section>
+
+</BaseLayout>

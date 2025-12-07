@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const areaSlug = 'clinical-decision-support';
+const areaName = 'Clinical Decision Support';
+const areaDescription = 'Developing AI-assisted tools that complement human expertise in clinical settings, with rigorous evaluation of real-world impact.';
+
+// Get research projects in this category
+const allResearch = await getCollection('research');
+const projects = allResearch.filter(r => r.data.category === areaSlug);
+const activeProjects = projects.filter(p => p.data.status === 'active');
+const completedProjects = projects.filter(p => p.data.status === 'completed');
+
+// Get related publications (those with relevant keywords in title or abstract)
+const allPublications = await getCollection('publications');
+const relatedPublications = allPublications.filter(pub => {
+  const text = `${pub.data.title} ${pub.data.abstract || ''}`.toLowerCase();
+  return text.includes('clinical') || text.includes('ai') || text.includes('decision support') ||
+         text.includes('diagnostic') || text.includes('algorithm') || text.includes('machine learning');
+}).slice(0, 8);
+---
+
+<BaseLayout title={areaName} description={areaDescription}>
+
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 244, 240, 0.85) 100%), url('/images/research/clinical-ai-icon.jpg');">
+    <div class="container">
+      <a href="/research" class="text-carolina hover:text-carolina-dark transition-colors text-sm font-medium flex items-center gap-2 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        All Research
+      </a>
+      <p class="eyebrow text-carolina mb-4">Research Area</p>
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">{areaName}</h1>
+      <p class="text-xl text-charcoal max-w-3xl">
+        {areaDescription}
+      </p>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section class="py-12 bg-cream">
+    <div class="container">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl font-display text-navy mb-4">Overview</h2>
+        <div class="prose prose-slate">
+          <p>
+            As AI systems are increasingly deployed in clinical settings, rigorous evaluation methods are essential
+            to ensure these tools genuinely improve patient outcomes. Our research focuses on developing and testing
+            AI-assisted clinical decision support systems that complement—rather than replace—human expertise.
+          </p>
+          <p>
+            Key areas of investigation include:
+          </p>
+          <ul>
+            <li><strong>Clinician-in-the-loop AI:</strong> Understanding how clinicians interact with AI recommendations and designing interfaces that support appropriate trust calibration</li>
+            <li><strong>Soft ground truth methods:</strong> Developing statistical approaches for evaluating AI when gold-standard labels are uncertain</li>
+            <li><strong>Implementation science:</strong> Studying how workflow integration, training, and population factors affect AI effectiveness</li>
+            <li><strong>Equity evaluation:</strong> Ensuring clinical AI performs equitably across demographic groups</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active Projects -->
+  {activeProjects.length > 0 && (
+    <section class="py-16 bg-paper">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Active Projects</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {activeProjects.map((project) => (
+            <a href={`/research/${project.id}`} class="card group">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">Active</span>
+                {project.data.featured && (
+                  <span class="text-xs px-2 py-0.5 rounded bg-carolina-pale text-carolina-dark">Featured</span>
+                )}
+              </div>
+              <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+                {project.data.title}
+              </h3>
+              <p class="text-sm text-slate leading-relaxed mb-4">
+                {project.data.description}
+              </p>
+              {project.data.fundingSources && project.data.fundingSources.length > 0 && (
+                <div class="text-xs text-slate">
+                  <span class="font-medium">Funding:</span> {project.data.fundingSources.join(', ')}
+                </div>
+              )}
+              <div class="mt-4 text-carolina text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                View project
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Completed Projects -->
+  {completedProjects.length > 0 && (
+    <section class="py-16 bg-stone/30">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Completed Projects</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {completedProjects.map((project) => (
+            <a href={`/research/${project.id}`} class="card bg-white group">
+              <span class="text-xs px-2 py-0.5 rounded bg-slate/10 text-slate mb-3 inline-block">Completed</span>
+              <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+                {project.data.title}
+              </h3>
+              <p class="text-sm text-slate line-clamp-2">
+                {project.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Related Publications -->
+  {relatedPublications.length > 0 && (
+    <section class="py-16 bg-paper">
+      <div class="container">
+        <div class="flex items-end justify-between mb-8">
+          <h2 class="text-2xl font-display text-navy">Related Publications</h2>
+          <a href="/publications" class="text-carolina font-medium text-sm flex items-center gap-2 hover:text-carolina-dark transition-colors">
+            View all publications
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+        <div class="space-y-4">
+          {relatedPublications.map((pub) => (
+            <div class="card">
+              <h4 class="font-semibold text-navy mb-1">{pub.data.title}</h4>
+              <p class="text-sm text-slate mb-2">
+                {pub.data.authors.join(', ')} ({pub.data.year})
+              </p>
+              <p class="text-sm text-carolina">{pub.data.journal}</p>
+              {pub.data.doi && (
+                <a href={`https://doi.org/${pub.data.doi}`} target="_blank" rel="noopener noreferrer" class="text-xs text-carolina-dark hover:underline mt-2 inline-block">
+                  DOI: {pub.data.doi}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Tools & Outputs -->
+  <section class="py-16 bg-cream">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Tools & Outputs</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <a href="/tools" class="card group">
+          <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">AugMed Platform</h3>
+          <p class="text-sm text-slate">
+            Open-source experimental platform for behavioral experiments with healthcare providers.
+            Run vignette-based clinical decision studies and AI tool evaluations.
+          </p>
+        </a>
+        <a href="/panels" class="card group">
+          <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">Provider Research Panel</h3>
+          <p class="text-sm text-slate">
+            Join our registry of healthcare providers participating in clinical AI research studies.
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Collaborate With Us</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        We're always looking for research partners, health system collaborators,
+        and clinical sites to advance our work in clinical AI evaluation.
+      </p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+</BaseLayout>

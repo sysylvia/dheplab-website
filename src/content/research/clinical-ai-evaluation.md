@@ -1,7 +1,7 @@
 ---
 title: Clinical AI Evaluation Methods
 description: Developing rigorous methodologies to assess AI-assisted clinical decision support systems, from algorithm performance to real-world clinical impact.
-category: clinical-ai
+category: clinical-decision-support
 status: active
 featured: true
 fundingSources:

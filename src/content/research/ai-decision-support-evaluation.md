@@ -1,7 +1,7 @@
 ---
 title: Evaluating AI-Assisted Clinical Decision Support
 description: Rigorous experimental methods for understanding how AI recommendations affect clinician decision-making, accuracy, and behavior in clinical risk assessment.
-category: clinical-ai
+category: clinical-decision-support
 status: active
 featured: true
 fundingSources:

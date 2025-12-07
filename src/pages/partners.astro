@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const partners = [
+  {
+    name: "CollectiveGood",
+    description: "AI-powered solutions for value-based care transformation",
+    type: "Spinout Company",
+    url: "https://collectivegood.io"
+  },
+  {
+    name: "CFK Africa",
+    description: "Community health innovation in East Africa",
+    type: "Research Partner",
+    url: "#"
+  },
+  {
+    name: "NC DHIT",
+    description: "North Carolina Digital Health Innovation and Technology Initiative",
+    type: "State Partner",
+    url: "#"
+  },
+  {
+    name: "Humana Foundation",
+    description: "Philanthropic partner supporting community health initiatives",
+    type: "Funder",
+    url: "#"
+  },
+  {
+    name: "Cone Health",
+    description: "Regional health system partner for implementation research",
+    type: "Health System Partner",
+    url: "#"
+  },
+  {
+    name: "El Centro Hispano",
+    description: "Community organization serving Latino communities in NC",
+    type: "Community Partner",
+    url: "#"
+  },
+  {
+    name: "AI@UNC",
+    description: "UNC's initiative for AI research and applications",
+    type: "University Partner",
+    url: "#"
+  },
+  {
+    name: "Fred Hutchinson Cancer Center",
+    description: "Cancer research and treatment center",
+    type: "Research Partner",
+    url: "#"
+  },
+  {
+    name: "Innovation@Gillings",
+    description: "Gillings School innovation and entrepreneurship program",
+    type: "University Partner",
+    url: "#"
+  }
+];
+---
+
+<BaseLayout title="Partners" description="Organizations collaborating with DHEPLab on digital health research and innovation.">
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 244, 240, 0.85) 100%), url('/images/heroes/team-hero.jpg');">
+    <div class="container">
+      <p class="eyebrow text-carolina mb-4">Collaborations</p>
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">Partners</h1>
+      <p class="text-xl text-charcoal max-w-2xl">
+        We work with health systems, community organizations, government agencies, and
+        industry partners to translate research into real-world impact.
+      </p>
+    </div>
+  </section>
+
+  <!-- Partners Grid -->
+  <section class="py-16 bg-paper">
+    <div class="container">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {partners.map((partner) => (
+          <a href={partner.url} class="card group">
+            <span class="eyebrow text-carolina mb-2 block">{partner.type}</span>
+            <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+              {partner.name}
+            </h3>
+            <p class="text-slate text-sm leading-relaxed">
+              {partner.description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Interested in Partnering?</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        We're always looking for new collaborations with health systems, community organizations,
+        and industry partners.
+      </p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+</BaseLayout>

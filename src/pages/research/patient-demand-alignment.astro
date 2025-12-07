@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const areaSlug = 'patient-demand-alignment';
+const areaName = 'Patient Demand & Alignment';
+const areaDescription = 'Understanding patient behavior, preferences, and economic factors that drive healthcare utilization and outcomes.';
+
+// Get research projects in this category
+const allResearch = await getCollection('research');
+const projects = allResearch.filter(r => r.data.category === areaSlug);
+const activeProjects = projects.filter(p => p.data.status === 'active');
+const completedProjects = projects.filter(p => p.data.status === 'completed');
+
+// Get related publications
+const allPublications = await getCollection('publications');
+const relatedPublications = allPublications.filter(pub => {
+  const text = `${pub.data.title} ${pub.data.abstract || ''}`.toLowerCase();
+  return text.includes('patient') || text.includes('demand') || text.includes('incentive') ||
+         text.includes('value-based') || text.includes('quality') || text.includes('provider') ||
+         text.includes('behavior') || text.includes('preference');
+}).slice(0, 8);
+---
+
+<BaseLayout title={areaName} description={areaDescription}>
+
+  <!-- Hero -->
+  <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 244, 240, 0.85) 100%), url('/images/research/value-based-care-icon.jpg');">
+    <div class="container">
+      <a href="/research" class="text-carolina hover:text-carolina-dark transition-colors text-sm font-medium flex items-center gap-2 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        All Research
+      </a>
+      <p class="eyebrow text-carolina mb-4">Research Area</p>
+      <h1 class="text-4xl md:text-5xl font-display text-navy mb-6">{areaName}</h1>
+      <p class="text-xl text-charcoal max-w-3xl">
+        {areaDescription}
+      </p>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section class="py-12 bg-cream">
+    <div class="container">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl font-display text-navy mb-4">Overview</h2>
+        <div class="prose prose-slate">
+          <p>
+            Understanding how patients make healthcare decisions—and how providers and systems can better align
+            with patient needs—is fundamental to improving health outcomes. Our research applies behavioral
+            economics and empirical methods to study healthcare demand and the design of effective incentive systems.
+          </p>
+          <p>
+            Key areas of investigation include:
+          </p>
+          <ul>
+            <li><strong>Patient decision-making:</strong> How patients weigh quality, cost, convenience, and other factors when choosing providers and treatments</li>
+            <li><strong>Provider incentives:</strong> Designing payment systems that align provider behavior with patient outcomes</li>
+            <li><strong>Value-based care:</strong> Evaluating alternative payment models and their effects on quality and cost</li>
+            <li><strong>Information and choice:</strong> How information provision affects patient choices and market outcomes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active Projects -->
+  {activeProjects.length > 0 && (
+    <section class="py-16 bg-paper">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Active Projects</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {activeProjects.map((project) => (
+            <a href={`/research/${project.id}`} class="card group">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">Active</span>
+                {project.data.featured && (
+                  <span class="text-xs px-2 py-0.5 rounded bg-carolina-pale text-carolina-dark">Featured</span>
+                )}
+              </div>
+              <h3 class="text-lg font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+                {project.data.title}
+              </h3>
+              <p class="text-sm text-slate leading-relaxed mb-4">
+                {project.data.description}
+              </p>
+              {project.data.fundingSources && project.data.fundingSources.length > 0 && (
+                <div class="text-xs text-slate">
+                  <span class="font-medium">Funding:</span> {project.data.fundingSources.join(', ')}
+                </div>
+              )}
+              <div class="mt-4 text-carolina text-sm font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                View project
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Completed Projects -->
+  {completedProjects.length > 0 && (
+    <section class="py-16 bg-stone/30">
+      <div class="container">
+        <h2 class="text-2xl font-display text-navy mb-8">Completed Projects</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {completedProjects.map((project) => (
+            <a href={`/research/${project.id}`} class="card bg-white group">
+              <span class="text-xs px-2 py-0.5 rounded bg-slate/10 text-slate mb-3 inline-block">Completed</span>
+              <h3 class="font-semibold text-navy group-hover:text-carolina transition-colors mb-2">
+                {project.data.title}
+              </h3>
+              <p class="text-sm text-slate line-clamp-2">
+                {project.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Related Publications -->
+  {relatedPublications.length > 0 && (
+    <section class="py-16 bg-paper">
+      <div class="container">
+        <div class="flex items-end justify-between mb-8">
+          <h2 class="text-2xl font-display text-navy">Related Publications</h2>
+          <a href="/publications" class="text-carolina font-medium text-sm flex items-center gap-2 hover:text-carolina-dark transition-colors">
+            View all publications
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+        <div class="space-y-4">
+          {relatedPublications.map((pub) => (
+            <div class="card">
+              <h4 class="font-semibold text-navy mb-1">{pub.data.title}</h4>
+              <p class="text-sm text-slate mb-2">
+                {pub.data.authors.join(', ')} ({pub.data.year})
+              </p>
+              <p class="text-sm text-carolina">{pub.data.journal}</p>
+              {pub.data.doi && (
+                <a href={`https://doi.org/${pub.data.doi}`} target="_blank" rel="noopener noreferrer" class="text-xs text-carolina-dark hover:underline mt-2 inline-block">
+                  DOI: {pub.data.doi}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Research Themes -->
+  <section class="py-16 bg-cream">
+    <div class="container">
+      <h2 class="text-2xl font-display text-navy mb-8">Research Themes</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-2">Provider Payment</h3>
+          <p class="text-sm text-slate">
+            Studying how payment models—fee-for-service, capitation, bundled payments, P4P—affect
+            provider behavior and patient outcomes.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-2">Quality Measurement</h3>
+          <p class="text-sm text-slate">
+            Developing methods for measuring and reporting healthcare quality that
+            are meaningful to patients and actionable for providers.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="text-lg font-semibold text-navy mb-2">Patient Navigation</h3>
+          <p class="text-sm text-slate">
+            Understanding barriers patients face in navigating the healthcare system
+            and designing interventions to improve access.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-carolina-pale">
+    <div class="container text-center">
+      <h2 class="text-2xl font-display text-navy mb-4">Collaborate With Us</h2>
+      <p class="text-slate mb-6 max-w-xl mx-auto">
+        We partner with health systems, payers, and policymakers to design and evaluate
+        payment and delivery innovations.
+      </p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+</BaseLayout>

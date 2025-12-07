@@ -1,25 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get news from collection (sorted by date, most recent first)
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const featuredNews = sortedNews.filter(n => n.data.featured).slice(0, 1);
+const otherNews = sortedNews.filter(n => !featuredNews.includes(n)).slice(0, 2);
+const newsItems = [...featuredNews, ...otherNews];
+
+// Get team from collection
+const allTeam = await getCollection('team', ({ data }) => data.active);
+const sortedTeam = allTeam.sort((a, b) => a.data.order - b.data.order).slice(0, 4);
 
 // Research areas data
 const researchAreas = [
   {
-    title: "Clinical AI Evaluation",
-    description: "Developing rigorous methodologies to assess AI-assisted clinical decision support systems, from algorithm performance to real-world clinical impact.",
+    title: "Clinical Decision Support",
+    description: "Developing AI-assisted tools that complement human expertise in clinical settings, with rigorous evaluation of real-world impact.",
     icon: "/images/research/clinical-ai-icon.jpg",
-    link: "/research/clinical-ai"
+    link: "/research/clinical-decision-support"
   },
   {
-    title: "Value-Based Care",
-    description: "Analyzing payment models that reward quality over quantity, with focus on ACO performance, risk adjustment, and care delivery transformation.",
+    title: "Patient Demand & Alignment",
+    description: "Understanding patient behavior, preferences, and economic factors that drive healthcare utilization and outcomes.",
     icon: "/images/research/value-based-care-icon.jpg",
-    link: "/research/value-based-care"
+    link: "/research/patient-demand-alignment"
   },
   {
-    title: "Digital Health Policy",
-    description: "Examining regulatory frameworks, reimbursement policies, and implementation science for digital health technologies at scale.",
+    title: "Digital Health Transformation",
+    description: "Examining telemedicine, health information systems, collective intelligence, and the digitization of healthcare delivery.",
     icon: "/images/research/digital-health-policy-icon.jpg",
-    link: "/research/digital-health-policy"
+    link: "/research/digital-health-transformation"
   }
 ];
 
@@ -31,33 +43,10 @@ const stats = [
   { number: "8", label: "Partner Organizations" }
 ];
 
-// Featured news
-const news = [
-  {
-    title: "New R01 Award: Evaluating AI-Assisted Diagnosis in Primary Care",
-    date: "November 2024",
-    excerpt: "DHEPLab receives NIH funding to study the implementation and outcomes of machine learning diagnostic tools across diverse healthcare settings.",
-    featured: true
-  },
-  {
-    title: "Paper Published in Health Affairs",
-    date: "October 2024",
-    excerpt: "Our analysis of Medicare ACO quality metrics reveals significant variation in performance measurement approaches."
-  },
-  {
-    title: "Dr. Sylvia Keynote at AcademyHealth",
-    date: "September 2024",
-    excerpt: "Presentation on methodological challenges in evaluating clinical decision support systems."
-  }
-];
-
-// Team preview
-const team = [
-  { name: "Sean Sylvia", role: "Director", initials: "SS" },
-  { name: "Research Associate", role: "Postdoc", initials: "RA" },
-  { name: "Doctoral Student", role: "PhD Student", initials: "DS" },
-  { name: "Project Manager", role: "Staff", initials: "PM" }
-];
+// Helper function to format date
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+};
 ---
 
 <BaseLayout title="DHEPLab" description="Digital Health Economics & Policy Lab at UNC Gillings School of Global Public Health. Advancing health through rigorous research at the intersection of economics, policy, and digital innovation.">
@@ -71,7 +60,7 @@ const team = [
           Advancing health through <em class="text-carolina">economics</em>, <em class="text-carolina">policy</em>, and <em class="text-carolina">digital innovation</em>
         </h1>
         <p class="text-xl md:text-2xl text-charcoal mb-8 leading-relaxed max-w-3xl">
-          We study how digital health technologies, economic incentives, and policy design can improve healthcare delivery and population health outcomes.
+          Integrate Behavioral and Computational Science for Health Policy Research in the Digital Age
         </p>
         <div class="flex flex-wrap gap-4">
           <a href="/research" class="btn-primary">
@@ -79,6 +68,9 @@ const team = [
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
+          </a>
+          <a href="/panels" class="btn-secondary">
+            Join a Research Panel
           </a>
           <a href="/newsletter" class="btn-secondary">
             Subscribe to Newsletter
@@ -152,27 +144,29 @@ const team = [
 
       <div class="grid md:grid-cols-12 gap-8">
         <!-- Featured news item -->
-        <div class="md:col-span-7">
-          <article class="card card-featured h-full">
-            <span class="eyebrow text-carolina mb-3 block">{news[0].date}</span>
-            <h3 class="text-xl md:text-2xl font-display text-navy mb-4">{news[0].title}</h3>
-            <p class="text-slate leading-relaxed mb-4 text-base">{news[0].excerpt}</p>
-            <a href="#" class="text-carolina font-medium text-sm flex items-center gap-2 hover:text-carolina-dark transition-colors">
-              Read more
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </a>
-          </article>
-        </div>
+        {newsItems[0] && (
+          <div class="md:col-span-7">
+            <article class="card card-featured h-full">
+              <span class="eyebrow text-carolina mb-3 block">{formatDate(newsItems[0].data.date)}</span>
+              <h3 class="text-xl md:text-2xl font-display text-navy mb-4">{newsItems[0].data.title}</h3>
+              <p class="text-slate leading-relaxed mb-4 text-base">{newsItems[0].data.excerpt}</p>
+              <a href={`/news/${newsItems[0].id}`} class="text-carolina font-medium text-sm flex items-center gap-2 hover:text-carolina-dark transition-colors">
+                Read more
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+            </article>
+          </div>
+        )}
 
         <!-- Secondary news items -->
         <div class="md:col-span-5 flex flex-col gap-6">
-          {news.slice(1).map((item) => (
+          {newsItems.slice(1).map((item) => (
             <article class="card">
-              <span class="text-xs text-slate uppercase tracking-wide">{item.date}</span>
-              <h4 class="text-lg font-semibold text-navy mt-2 mb-2">{item.title}</h4>
-              <p class="text-sm text-slate line-clamp-2">{item.excerpt}</p>
+              <span class="text-xs text-slate uppercase tracking-wide">{formatDate(item.data.date)}</span>
+              <h4 class="text-lg font-semibold text-navy mt-2 mb-2">{item.data.title}</h4>
+              <p class="text-sm text-slate line-clamp-2">{item.data.excerpt}</p>
             </article>
           ))}
         </div>
@@ -197,13 +191,17 @@ const team = [
       </div>
 
       <div class="flex flex-wrap justify-center gap-10 mb-10">
-        {team.map((member) => (
-          <a href="/team" class="text-center group cursor-pointer">
-            <div class="w-28 h-28 rounded-full bg-gradient-to-br from-carolina-light to-carolina flex items-center justify-center text-white text-2xl font-display mb-3 border-3 border-white shadow-md group-hover:scale-105 transition-transform">
-              {member.initials}
-            </div>
-            <div class="font-semibold text-navy text-base">{member.name}</div>
-            <div class="text-sm text-slate">{member.role}</div>
+        {sortedTeam.map((member) => (
+          <a href={`/team/${member.id}`} class="text-center group cursor-pointer">
+            {member.data.image ? (
+              <img src={member.data.image} alt={member.data.name} class="w-28 h-28 rounded-full object-cover mb-3 border-3 border-white shadow-md group-hover:scale-105 transition-transform" />
+            ) : (
+              <div class="w-28 h-28 rounded-full bg-gradient-to-br from-carolina-light to-carolina flex items-center justify-center text-white text-2xl font-display mb-3 border-3 border-white shadow-md group-hover:scale-105 transition-transform">
+                {member.data.name.split(' ').map(n => n[0]).join('')}
+              </div>
+            )}
+            <div class="font-semibold text-navy text-base">{member.data.name}</div>
+            <div class="text-sm text-slate">{member.data.role}</div>
           </a>
         ))}
       </div>
@@ -211,6 +209,43 @@ const team = [
       <div class="text-center">
         <a href="/team" class="btn-secondary">
           View Full Team
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section class="py-16 md:py-20 bg-paper">
+    <div class="container">
+      <div class="text-center mb-10">
+        <p class="eyebrow mb-3">Collaborations</p>
+        <h2 class="text-3xl md:text-4xl mb-2">Our Partners</h2>
+        <div class="accent-line mx-auto mt-4"></div>
+      </div>
+
+      <div class="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+        {[
+          { name: "CollectiveGood", logo: "/images/partners/collectivegood.svg", url: "https://collectivegood.io" },
+          { name: "CFK Africa", logo: "/images/partners/cfk-africa.svg", url: "https://cfkafrica.org" },
+          { name: "NC DHIT", logo: "/images/partners/nc-dhit.svg", url: "https://ncdhit.org" },
+          { name: "Humana Foundation", logo: "/images/partners/humana-foundation.svg", url: "https://www.humanafoundation.org" },
+          { name: "Cone Health", logo: "/images/partners/cone-health.svg", url: "https://www.conehealth.com" },
+          { name: "El Centro Hispano", logo: "/images/partners/el-centro-hispano.svg", url: "https://elcentronc.org" },
+          { name: "AI@UNC", logo: "/images/partners/ai-unc.svg", url: "https://ai.unc.edu" },
+          { name: "Fred Hutchinson Cancer Center", logo: "/images/partners/fred-hutch.svg", url: "https://www.fredhutch.org" }
+        ].map((partner) => (
+          <a href={partner.url} target="_blank" rel="noopener noreferrer" class="group transition-all hover:scale-105">
+            <img src={partner.logo} alt={partner.name} class="h-14 w-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+          </a>
+        ))}
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/partners" class="text-carolina font-medium text-sm flex items-center justify-center gap-2 hover:text-carolina-dark transition-colors">
+          View all partnerships
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
         </a>
       </div>
     </div>
